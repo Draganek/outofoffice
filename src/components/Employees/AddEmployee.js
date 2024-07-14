@@ -46,6 +46,7 @@ const AddEmployee = () => {
 
     return (
         <EmployeeForm
+            tittle={"Add Employee"}
             employee={employee}
             handleSubmit={handleSubmit}
             handleChange={handleChange}

@@ -4,3 +4,14 @@
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1); /* Cień dla lepszego wyróżnienia */
   border-radius: 5px; /* Zaokrąglenie rogów */
 }
+
+
+.navbar-nav {
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+}
+
+.navbar-collapse {
+  display: flex !important;
+  justify-content: flex-start !important;
+}

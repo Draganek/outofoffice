@@ -8,8 +8,9 @@ const inputStyle = {
     color: '#495057'
 };
 
-const EmployeeForm = ({ employee, handleSubmit, handleChange }) => {
+const EmployeeForm = ({ employee, handleSubmit, handleChange, tittle }) => {
     const [Partners, setPartners] = useState([]);
+    const [isFilled, setIsFilled] = useState(false);
     const subdivision = ["Division", "Another division"];
     const positions = ["Frontend", "Fullstack", "Backend", "HR Manager"];
 
@@ -26,18 +27,25 @@ const EmployeeForm = ({ employee, handleSubmit, handleChange }) => {
         });
     }, []);
 
-    const saveInputs = (event) => {
-        employee.position = positions[0];
-        employee.subdivision = subdivision[0]
-        employee.peoplePartner = Partners[0]?.id
-        employee.map(e => {alert(e)})
-        handleSubmit(event);
-    }
+    useEffect(() => {
+        const checkIsFilled = () => {
+            const { fullName, position, subdivision, status, peoplePartner, outOfOfficeBalance } = employee;
+            setIsFilled(
+                fullName &&
+                position &&
+                subdivision &&
+                status &&
+                peoplePartner &&
+                outOfOfficeBalance !== ""
+            );
+        };
+        checkIsFilled();
+    }, [employee]);
 
     return (
         <form onSubmit={handleSubmit} className="text-start p-4" style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <div className="container">
-                <h2 className="text-center">Employee Form</h2>
+                <h2 className="text-center">{tittle}</h2>
                 <div className="mb-3 mt-5">
                     <label htmlFor="fullName" className="form-label">Full Name</label>
                     <input
@@ -58,10 +66,11 @@ const EmployeeForm = ({ employee, handleSubmit, handleChange }) => {
                         className="form-select"
                         id="position"
                         name="position"
-                        value={employee.position || positions[0]} // Ustawienie domyślnej wartości
+                        value={employee.position} // Ustawienie domyślnej wartości
                         onChange={handleChange}
                         style={inputStyle}
                     >
+                        <option value="">{'<Choose>'}</option>
                         {positions.map(element => (
                             <option key={element} value={element}>{element}</option>
                         ))}
@@ -74,10 +83,11 @@ const EmployeeForm = ({ employee, handleSubmit, handleChange }) => {
                         className="form-select"
                         id="subdivision"
                         name="subdivision"
-                        value={employee.subdivision || subdivision[0]} // Ustawienie domyślnej wartości
+                        value={employee.subdivision} // Ustawienie domyślnej wartości
                         onChange={handleChange}
                         style={inputStyle}
                     >
+                        <option value="">{'<Choose>'}</option>
                         {subdivision.map(element => (
                             <option key={element} value={element}>{element}</option>
                         ))}
@@ -105,13 +115,15 @@ const EmployeeForm = ({ employee, handleSubmit, handleChange }) => {
                         className="form-select"
                         id="peoplePartner"
                         name="peoplePartner"
-                        value={employee.peoplePartner || (Partners[0] && Partners[0].id)} // Ustawienie domyślnej wartości
+                        value={employee.peoplePartner} // Ustawienie domyślnej wartości
                         onChange={handleChange}
                         style={inputStyle}
                     >
+                        <option value="">{'<Choose>'}</option>
                         {Partners.map(element => (
                             <option key={element.id} value={element.id}>{element.fullName}</option>
                         ))}
+                        <option value="null">Not elected</option>
                     </select>
                 </div>
 
@@ -128,8 +140,10 @@ const EmployeeForm = ({ employee, handleSubmit, handleChange }) => {
                         style={inputStyle}
                     />
                 </div>
-
-                <button type="submit" className="btn btn-primary w-100" onClick={saveInputs}>Submit</button>
+                <div className='d-flex flex-column'>
+                <button style={{fontSize: "1.8rem"}} type="submit" disabled={!isFilled} className="btn btn-primary w-100"><b>Submit</b></button>
+                {!isFilled && (<span className='alert alert-warning alert-dismissible mt-2 p-2 text-center'>Fill in all fields</span>)}
+                </div>
             </div>
         </form>
     );

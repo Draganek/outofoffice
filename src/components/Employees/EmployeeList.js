@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { database } from '../../firebase';
-import { ref, push, onValue } from 'firebase/database';
+import { ref, push, onValue, remove } from 'firebase/database';
 import EmployeeForm from './EmployeeForm';
+import { NavLink } from 'react-router-dom';
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
@@ -14,6 +15,18 @@ const EmployeeList = () => {
             setEmployees(employeeList);
         });
     }, []);
+
+    const deleteEmployee = (employeeId) => {
+        const employeeRef = ref(database, `employees/${employeeId}`);
+        remove(employeeRef)
+            .then(() => {
+                console.log("Employee removed successfully.");
+                // Możesz tutaj zaktualizować stan aplikacji, np. usunąć pracownika z listy w stanie
+            })
+            .catch((error) => {
+                console.error("Error removing employee: ", error);
+            });
+    };
 
     return (
         <div>
@@ -42,7 +55,9 @@ const EmployeeList = () => {
                                 <td>{employee.status}</td>
                                 <td>{employee.peoplePartner}</td>
                                 <td>{employee.outOfOfficeBalance}</td>
-                                <td><button>Edit</button><button>Delete</button></td>
+                                <td>
+                                    <NavLink className='btn btn-warning' to={`/employees/edit/${employee.id}`}>Edit</NavLink>
+                                    <button className='btn btn-primary' onClick={() => deleteEmployee(employee.id)}>Delete</button></td>
                             </tr>
                         ))}
                     </tbody>
