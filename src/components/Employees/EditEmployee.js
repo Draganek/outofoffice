@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { database } from '../../firebase';
 import { ref, onValue, update } from 'firebase/database';
 import EmployeeForm from './EmployeeForm';
 
 const EditEmployee = () => {
     const [employee, setEmployee] = useState({
-        id: '', // Dodajemy id jako część stanu pracownika
+        id: '',
         fullName: '',
         position: '',
         subdivision: '',
@@ -15,7 +15,8 @@ const EditEmployee = () => {
         outOfOfficeBalance: ''
     });
 
-    const { id } = useParams(); // Pobieramy parametr `id` z URL-a
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const employeesRef = ref(database, `employees/${id}`);
@@ -24,7 +25,6 @@ const EditEmployee = () => {
             const data = snapshot.val();
 
             if (data) {
-                // Ustawiamy dane pracownika wraz z id
                 setEmployee({
                     id: id,
                     fullName: data.fullName || '',
@@ -51,16 +51,8 @@ const EditEmployee = () => {
             const employeeRef = ref(database, `employees/${id}`);
             update(employeeRef, employeeData)
                 .then(() => {
-                    console.log('Employee updated successfully');
-                    setEmployee({
-                        id: '',
-                        fullName: '',
-                        position: '',
-                        subdivision: '',
-                        status: 'Active',
-                        peoplePartner: '',
-                        outOfOfficeBalance: ''
-                    });
+                    alert('Employee updated successfully');
+                    navigate('/employees');
                 })
                 .catch((error) => {
                     console.error('Error updating employee: ', error);

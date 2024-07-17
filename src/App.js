@@ -16,13 +16,16 @@ function App() {
                     <div className="collapse navbar-collapse">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item" >
-                                <NavLink style={{padding: "8px"}} className="nav-link" to="/" activeClassName="active">Main</NavLink>
+                                <NavLink style={{padding: "8px"}} className="nav-link" to="/" >Main</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink style={{padding: "8px"}} className="nav-link" to="/employees" activeClassName="active">Employees</NavLink>
+                                <NavLink style={{padding: "8px"}} className="nav-link" to="/employees" >Employees</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink style={{padding: "8px"}} className="nav-link" to="/leave-request" activeClassName="active">Leave Request</NavLink>
+                                <NavLink style={{padding: "8px"}} className="nav-link" to="/leave-request" >Project</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink style={{padding: "8px"}} className="nav-link" to="/leave-request" >Leave Request</NavLink>
                             </li>
                         </ul>
                     </div>
